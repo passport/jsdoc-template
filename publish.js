@@ -1,8 +1,43 @@
 var helper = require('jsdoc/util/templateHelper');
 var taffy = require('taffydb').taffy;
+var path = require('path');
+const template = require('jsdoc/template');
 
 
 // https://github.com/jsdoc/jsdoc/tree/main/packages/jsdoc/templates
+
+
+
+function generate(title, docs, filename, resolveLinks, outdir, dependencies) {
+  console.log('generate! ' + title);
+  //onsole.log(docs);
+  //console.log(filename);
+  //console.log(resolveLinks);
+  //console.log(outdir);
+  //console.log(dependencies);
+  console.log('---')
+  
+  //const env = dependencies.get('env');
+  var env
+  
+  const docData = {
+    env: env,
+    title: title,
+    docs: docs,
+  };
+  
+  
+  //view = new template.Template(path.join(templatePath, 'tmpl'));
+  
+  //var view = new template.Template(path.join('tmpl'));
+  var view = new template.Template(path.join(__dirname, 'tmpl'));
+  console.log(view);
+  
+  var html = view.render('container.tmpl', docData);
+  console.log(html);
+  
+}
+
 
 /**
     @param {TAFFY} data See <http://taffydb.com/>.
@@ -10,11 +45,15 @@ var taffy = require('taffydb').taffy;
  */
 exports.publish = function (data, opts) {
   console.log('template publish');
+  console.log(opts);
   //console.log(data);
   //console.log(opts);
   
   
   //console.log(data());
+  
+  var outdir = path.normalize(opts.destination);
+  
   
   data = helper.prune(data, opts);
   
@@ -53,14 +92,13 @@ exports.publish = function (data, opts) {
   
   
   data().each((doclet) => {
-    console.log('!: ' + doclet.longname);
-    
     const url = helper.longnameToUrl[doclet.longname];
-    console.log(url);
     
-    //if (url.includes('#')) {
-    //  
-    //}
+    if (url.includes('#')) {
+      doclet.id = helper.longnameToUrl[doclet.longname].split(/#/).pop();
+    } else {
+      doclet.id = doclet.name;
+    }
     
   });
   
@@ -71,9 +109,27 @@ exports.publish = function (data, opts) {
   
   console.log(helper.longnameToUrl);
   
-  /*
+  
   Object.keys(helper.longnameToUrl).forEach((longname) => {
     console.log(longname)
+    
+    
+    const myClasses = helper.find(classes, { longname: longname });
+    //console.log(myClasses);
+    
+    if (myClasses.length) {
+      console.log('GERNERATE CLASSES');
+      
+      generate(
+        `Class: ${myClasses[0].name}`,
+        myClasses,
+        helper.longnameToUrl[longname],
+        true,
+        outdir,
+        opts
+      );
+    }
+    
+    
   });
-  */
 };
