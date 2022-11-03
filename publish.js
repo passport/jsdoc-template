@@ -2,11 +2,27 @@ var helper = require('jsdoc/util/templateHelper');
 var taffy = require('taffydb').taffy;
 var path = require('path');
 const template = require('jsdoc/template');
+const fs = require('fs');
 
 
 // https://github.com/jsdoc/jsdoc/tree/main/packages/jsdoc/templates
 
+function mkdirpSync(filepath) {
+  return fs.mkdirSync(filepath, { recursive: true });
+}
 
+function hashToLink(doclet, hash) {
+  var url;
+
+  if ( !/^(#.+)/.test(hash) ) {
+    return hash;
+  }
+
+  url = helper.createLink(doclet);
+  url = url.replace(/(#.+|$)/, hash);
+
+  return '<a href="' + url + '">' + hash + '</a>';
+}
 
 function generate(title, docs, filename, resolveLinks, outdir, dependencies) {
   console.log('generate! ' + title);
@@ -26,6 +42,8 @@ function generate(title, docs, filename, resolveLinks, outdir, dependencies) {
     docs: docs,
   };
   
+  console.log(docData);
+  
   
   //view = new template.Template(path.join(templatePath, 'tmpl'));
   
@@ -33,9 +51,12 @@ function generate(title, docs, filename, resolveLinks, outdir, dependencies) {
   var view = new template.Template(path.join(__dirname, 'tmpl'));
   console.log(view);
   
-  var html = view.render('container.tmpl', docData);
+  const outpath = path.join(outdir, filename);
+  const html = view.render('container.tmpl', docData);
   console.log(html);
+  console.log(outpath);
   
+  fs.writeFileSync(outpath, html, 'utf8');
 }
 
 
@@ -46,26 +67,58 @@ function generate(title, docs, filename, resolveLinks, outdir, dependencies) {
 exports.publish = function (data, opts) {
   console.log('template publish');
   console.log(opts);
+  //console.log(env)
+  
   //console.log(data);
   //console.log(opts);
-  
-  
   //console.log(data());
+  
+  var conf;
+  
+  conf = env.conf.templates || {};
+  conf.default = conf.default || {};
+  
   
   var outdir = path.normalize(opts.destination);
   
+  const globalUrl = helper.getUniqueFilename('global');
+  helper.registerLink('global', globalUrl);
   
-  data = helper.prune(data, opts);
+
+  data = helper.prune(data);
+  data.sort('longname, version, since');
+  helper.addEventListeners(data);
   
   
   data().each(function(doclet) {
     //console.log(doclet)
+    
+    doclet.attribs = '';
   
     if (doclet.examples) {
-      //console.log("EXAMPLE!")
+      console.log("**** EXAMPLES!")
+      
+      doclet.examples = doclet.examples.map((example) => {
+        let caption;
+        let code;
+
+        if (example.match(/^\s*<caption>([\s\S]+?)<\/caption>(\s*[\n\r])([\s\S]+)$/i)) {
+          caption = RegExp.$1;
+          code = RegExp.$3;
+        }
+
+        return {
+          caption: caption || '',
+          code: code || example,
+        };
+      });
     }
     if (doclet.see) {
       //console.log("SEE")
+      
+      doclet.see.forEach((seeItem, i) => {
+              doclet.see[i] = hashToLink(doclet, seeItem, dependencies);
+        });
     }
     if (doclet.meta) {
       //console.log("META")
@@ -75,6 +128,9 @@ exports.publish = function (data, opts) {
   
   var packageInfo = (helper.find(data, {kind: 'package'}) || [])[0];
   console.log(packageInfo);
+  
+  console.log('MKDIR: ' + outdir);
+  mkdirpSync(outdir);
   
   var members = helper.getMembers(data);
   //console.log(members);
