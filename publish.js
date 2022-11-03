@@ -1,8 +1,11 @@
 var helper = require('jsdoc/util/templateHelper');
 var taffy = require('taffydb').taffy;
-var path = require('path');
+var path = require('jsdoc/path');
 const template = require('jsdoc/template');
 const fs = require('fs');
+
+var data;
+var view;
 
 
 // https://github.com/jsdoc/jsdoc/tree/main/packages/jsdoc/templates
@@ -48,7 +51,7 @@ function generate(title, docs, filename, resolveLinks, outdir, dependencies) {
   //view = new template.Template(path.join(templatePath, 'tmpl'));
   
   //var view = new template.Template(path.join('tmpl'));
-  var view = new template.Template(path.join(__dirname, 'tmpl'));
+  //var view = new template.Template(path.join(__dirname, 'tmpl'));
   console.log(view);
   
   const outpath = path.join(outdir, filename);
@@ -64,7 +67,7 @@ function generate(title, docs, filename, resolveLinks, outdir, dependencies) {
     @param {TAFFY} data See <http://taffydb.com/>.
     @param {object} opts
  */
-exports.publish = function (data, opts) {
+exports.publish = function(taffyData, opts) {
   console.log('template publish');
   console.log(opts);
   //console.log(env)
@@ -74,15 +77,34 @@ exports.publish = function (data, opts) {
   //console.log(data());
   
   var conf;
+  var globalUrl;
+  var indexUrl;
+  var templatePath;
+  
+  data = taffyData;
   
   conf = env.conf.templates || {};
   conf.default = conf.default || {};
   
+  templatePath = path.normalize(opts.template);
+  view = new template.Template( path.join(templatePath, 'tmpl') );
+  
+  indexUrl = helper.getUniqueFilename('index');
+
+  globalUrl = helper.getUniqueFilename('global');
+  helper.registerLink('global', globalUrl);
+  
+  // set up templating
+  view.layout = conf.default.layoutFile ?
+    path.getResourcePath(path.dirname(conf.default.layoutFile),
+      path.basename(conf.default.layoutFile) ) :
+      'layout.tmpl';
+  
+      console.log('#### VIEW LAYOUT');
+      console.log(view.layout);
+  
   
   var outdir = path.normalize(opts.destination);
-  
-  const globalUrl = helper.getUniqueFilename('global');
-  helper.registerLink('global', globalUrl);
   
 
   data = helper.prune(data);
