@@ -587,16 +587,35 @@ exports.publish = function(taffyData, opts) {
   Object.keys(helper.longnameToUrl).forEach((longname) => {
     console.log(longname)
     
+    var myClasses = helper.find(classes, {longname: longname});
+    var myExternals = helper.find(externals, {longname: longname});
+    var myInterfaces = helper.find(interfaces, {longname: longname});
+    var myMixins = helper.find(mixins, {longname: longname});
+    var myModules = helper.find(modules, {longname: longname});
+    var myNamespaces = helper.find(namespaces, {longname: longname});
     
-    const myClasses = helper.find(classes, { longname: longname });
-    //console.log(myClasses);
+    if (myModules.length) {
+      generate('Module: ' + myModules[0].name, myModules, helper.longnameToUrl[longname]);
+    }
     
     if (myClasses.length) {
-      console.log('GERNERATE CLASSES');
-      
       generate('Class: ' + myClasses[0].name, myClasses, helper.longnameToUrl[longname]);
     }
     
-    
+    if (myNamespaces.length) {
+      generate('Namespace: ' + myNamespaces[0].name, myNamespaces, helper.longnameToUrl[longname]);
+    }
+
+    if (myMixins.length) {
+      generate('Mixin: ' + myMixins[0].name, myMixins, helper.longnameToUrl[longname]);
+    }
+
+    if (myExternals.length) {
+      generate('External: ' + myExternals[0].name, myExternals, helper.longnameToUrl[longname]);
+    }
+
+    if (myInterfaces.length) {
+      generate('Interface: ' + myInterfaces[0].name, myInterfaces, helper.longnameToUrl[longname]);
+    }
   });
 };
