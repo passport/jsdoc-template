@@ -585,8 +585,6 @@ exports.publish = function(taffyData, opts) {
   
   
   Object.keys(helper.longnameToUrl).forEach((longname) => {
-    console.log(longname)
-    
     var myClasses = helper.find(classes, {longname: longname});
     var myExternals = helper.find(externals, {longname: longname});
     var myInterfaces = helper.find(interfaces, {longname: longname});
