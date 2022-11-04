@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <meta charset="utf-8">
+    <title>JSDoc: <?js= title ?></title>
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/styles/default.min.css">
     <link rel="stylesheet" href="https://www.passportjs.org/assets/styles/all.css">
   </head>
@@ -37,22 +39,11 @@
       <div id="content">
         <div class="book" id="book">
           <div class="toc">
-            <nav data-accordion-group="">
-              <div class="accordion" data-accordion="">
-                <h5 data-control=""><i class="icon-budicon-461"></i><a href="/tutorials/password/"></a></h5>
-                <ul data-content="">
-                  <li><a class="active" href="/tutorials/password/">Introduction</a></li>
-                  <li><a href="/tutorials/password/prompt/">Login Prompt</a></li>
-                  <li><a href="/tutorials/password/verify/">Verify Password</a></li>
-                  <li><a href="/tutorials/password/session/">Establish Session</a></li>
-                  <li><a href="/tutorials/password/logout/">Log Out</a></li>
-                  <li><a href="/tutorials/password/signup/">Sign Up</a></li>
-                </ul>
-              </div>
-            </nav>
+            <?js= this.nav ?>
           </div><a id="go-top" href="#top"><i class="icon-budicon-462"></i></a>
           <div class="contents">
-<?js= content ?>
+            <h1 class="page-title"><?js= title ?></h1>
+            <?js= content ?>
           </div>
         </div>
       </div>
