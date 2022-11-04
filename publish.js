@@ -378,13 +378,21 @@ exports.publish = function(taffyData, opts) {
   //console.log(opts);
   //console.log(data());
   
+  var classes;
+  var externals;
   var conf;
+  var files;
   var fromDir;
   var globalUrl;
   var indexUrl;
+  var interfaces;
+  var mixins;
+  var modules;
+  var namespaces;
   var members;
   var outputSourceFiles;
   var packageInfo;
+  var packages;
   var sourceFilePaths = [];
   var sourceFiles = {};
   var staticFiles;
@@ -554,9 +562,26 @@ exports.publish = function(taffyData, opts) {
   
   if (members.globals.length) { generate('Global', [{kind: 'globalobj'}], globalUrl); }
   
+  // index page displays information from package.json and lists files
+  files = find({kind: 'file'});
+  packages = find({kind: 'package'});
+  
+  generate('Home',
+    packages.concat(
+      [{
+        kind: 'mainpage',
+        readme: opts.readme,
+        longname: (opts.mainpagetitle) ? opts.mainpagetitle : 'Main Page'
+      }]
+    ).concat(files), indexUrl);
+  
   // set up the lists that we'll use to generate pages
-  var classes = taffy(members.classes);
-  //console.log(classes);
+  classes = taffy(members.classes);
+  modules = taffy(members.modules);
+  namespaces = taffy(members.namespaces);
+  mixins = taffy(members.mixins);
+  externals = taffy(members.externals);
+  interfaces = taffy(members.interfaces);
   
   
   Object.keys(helper.longnameToUrl).forEach((longname) => {
