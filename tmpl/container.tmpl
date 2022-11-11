@@ -1,9 +1,21 @@
 <?js
-    var self = this;
-    var isGlobalPage;
+  var self = this;
+  var isGlobalPage;
 
-    docs.forEach(function(doc, i) {
+  docs.forEach(function(doc, i) {
 ?>
+
+<?js
+  // we only need to check this once
+  if (typeof isGlobalPage === 'undefined') {
+    isGlobalPage = (doc.kind === 'globalobj');
+  }
+?>
+<?js if (doc.kind === 'mainpage' || (doc.kind === 'package')) { ?>
+  <?js= self.partial('mainpage.tmpl', doc) ?>
+<?js } else if (doc.kind === 'source') { ?>
+  <?js= self.partial('source.tmpl', doc) ?>
+<?js } else { ?>
 
 <section>
   <header>
@@ -32,5 +44,7 @@
   </article>
 
 </section>
+
+<?js } ?>
 
 <?js }); ?>
