@@ -165,6 +165,17 @@ if (typeof isGlobalPage === 'undefined') {
         }
       }); ?>
     <?js } ?>
+    
+    <?js
+      var events = self.find({kind: 'event', memberof: isGlobalPage ? {isUndefined: true} : doc.longname});
+      if (events && events.length && events.forEach) {
+    ?>
+      <h3 class="subsection-title">Events</h3>
+
+      <?js events.forEach(function(e) { ?>
+        <?js= self.partial('method.tmpl', e) ?>
+      <?js }); ?>
+    <?js } ?>
   </article>
 
 </section>
