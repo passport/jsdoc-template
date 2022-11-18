@@ -57,6 +57,29 @@
     });
 ?>
 
+
+<ol>
+  <?js
+      var self = this;
+      params.forEach(function(param) {
+          if (!param) { return; }
+  ?>
+  <li>
+    <?js if (params.hasName) {?>
+      <code><?js= param.name ?></code>
+    <?js } ?>
+    
+    <?js if (param.type && param.type.names) {?>
+        <?js= self.partial('type.tmpl', param.type.names) ?>
+    <?js } ?>
+    
+    <?js= param.description ?>
+  </li>
+
+  <?js }); ?>
+</ol>
+
+
 <table class="params">
     <thead>
     <tr>
