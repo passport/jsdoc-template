@@ -32,7 +32,7 @@ if (typeof isGlobalPage === 'undefined') {
       <sup class="variation"><?js= doc.variation ?></sup><?js
     } ?></h2>
     <?js if (doc.classdesc) { ?>
-      <div class="class-description"><?js= doc.classdesc ?></div>
+      <?js= doc.classdesc ?>
     <?js } ?>
   <?js } else if (doc.kind === 'module' && doc.modules) { ?>
     <?js doc.modules.forEach(function(module) { ?>
