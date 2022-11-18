@@ -3,6 +3,9 @@ var self = this;
 var isGlobalPage;
 
 docs.forEach(function(doc, i) {
+  console.log('---')
+  console.log(doc)
+  console.log('---')
 ?>
 
 <?js
@@ -27,8 +30,7 @@ if (typeof isGlobalPage === 'undefined') {
     ?><?js= doc.name ?><?js
     if (doc.variation) { ?>
       <sup class="variation"><?js= doc.variation ?></sup><?js
-    }
-    if (doc.signature && !doc.hideconstructor) { ?><?js= doc.signature ?><?js } ?></h2>
+    } ?></h2>
     <?js if (doc.classdesc) { ?>
       <div class="class-description"><?js= doc.classdesc ?></div>
     <?js } ?>
