@@ -3,9 +3,6 @@ var self = this;
 var isGlobalPage;
 
 docs.forEach(function(doc, i) {
-  console.log('---')
-  console.log(doc)
-  console.log('---')
 ?>
 
 <?js
@@ -60,7 +57,6 @@ if (typeof isGlobalPage === 'undefined') {
       <?js } ?>
       <?js= self.partial('details.tmpl', doc) ?>
       <?js if (doc.examples && doc.examples.length) { ?>
-        <h3>Example<?js= doc.examples.length > 1? 's':'' ?></h3>
         <?js= self.partial('examples.tmpl', doc.examples) ?>
       <?js } ?>
     <?js } ?>
@@ -143,7 +139,7 @@ if (typeof isGlobalPage === 'undefined') {
       var methods = self.find({kind: 'function', memberof: isGlobalPage ? {isUndefined: true} : doc.longname});
       if (methods && methods.length && methods.forEach) {
     ?>
-      <h3 class="subsection-title">Methods</h3>
+      <h3>Methods</h3>
       <?js methods.forEach(function(m) { ?>
         <?js= self.partial('method.tmpl', m) ?>
       <?js }); ?>
