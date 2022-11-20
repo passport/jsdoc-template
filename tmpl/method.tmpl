@@ -13,10 +13,6 @@ var data = obj;
   <?js } ?>
 <?js } ?>
 
-<?js if (data.kind !== 'module' && data.description && !data.hideconstructor) { ?>
-  <?js= data.description ?>
-<?js } ?>
-
 <?js if (data.augments && data.alias && data.alias.indexOf('module:') === 0) { ?>
   <?js= self.partial('augments.tmpl', data) ?>
 <?js } ?>
@@ -36,7 +32,11 @@ var data = obj;
 <?js } ?>
 
 <?js if (data.params && params.length && !data.hideconstructor) { ?>
-    <?js= this.partial('params.tmpl', params) ?>
+  <?js= this.partial('params.tmpl', params) ?>
+<?js } ?>
+
+<?js if (data.kind !== 'module' && data.description && !data.hideconstructor) { ?>
+  <?js= data.description ?>
 <?js } ?>
 
 <?js= this.partial('details.tmpl', data) ?>
