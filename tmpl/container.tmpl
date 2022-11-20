@@ -60,8 +60,8 @@ if (typeof isGlobalPage === 'undefined') {
     <?js } ?>
     </div>
     
+    <?js // TODO: Move this up, but its conflicting with stuff in method.tmpl ?>
     <?js if (doc.augments && doc.augments.length) { ?>
-      <h3 class="subsection-title">Extends</h3>
       <?js= self.partial('augments.tmpl', doc) ?>
     <?js } ?>
     
