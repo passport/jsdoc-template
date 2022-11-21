@@ -16,8 +16,26 @@ var hasOwnProp = Object.prototype.hasOwnProperty;
 
 var data;
 var view;
+var packageJSON;
 
 var outdir = path.normalize(env.opts.destination);
+
+// Equivalent to helper.createLink, but using desired path naming conventions
+function x_createLink(doclet) {
+  var out = helper.createLink(doclet);
+  //console.log(doclet);
+  
+  if (doclet.kind == 'module' && doclet.name == packageJSON.name) {
+    console.log('**** MAKE IT INDEX *****');
+    console.log(out);
+    
+    out = 'index.html';
+  }
+  
+  
+  return out;
+}
+
 
 function find(spec) {
   return helper.find(data, spec);
@@ -93,6 +111,8 @@ function getSignatureAttributes(item) {
 }
 
 function updateItemName(item) {
+  //console.log(item);
+  
   var attributes = getSignatureAttributes(item);
   var itemName = item.name || '';
 
@@ -100,9 +120,15 @@ function updateItemName(item) {
     itemName = '&hellip;' + itemName;
   }
 
+  /*
   if (attributes && attributes.length) {
-    itemName = util.format( '%s<span class="signature-attributes">%s</span>', itemName,
+    itemName = util.format( '%s<span class="signature-attributes x-sig-att">%s</span>', itemName,
       attributes.join(', ') );
+  }
+  */
+  
+  if (item.optional) {
+    itemName = '[' + itemName + ']'
   }
 
   return itemName;
@@ -170,6 +196,8 @@ function addSignatureReturns(f) {
   if (returnTypes.length) {
     returnTypesString = util.format( ' &rarr; %s{%s}', attribsString, returnTypes.join('|') );
   }
+  
+  //console.log('XX: ' + f.signature);
 
   f.signature = '<span class="signature">' + (f.signature || '') + '</span>' +
       '<span class="type-signature">' + returnTypesString + '</span>';
@@ -397,6 +425,12 @@ exports.publish = function(taffyData, opts) {
   var sourceFiles = {};
   var staticFiles;
   var templatePath;
+  //var packageJSON;
+  
+  var pdata = fs.readFileSync('package.json', 'utf8');
+  packageJSON = JSON.parse(pdata);
+  
+  //console.log(packageJSON);
   
   data = taffyData;
   
@@ -421,7 +455,6 @@ exports.publish = function(taffyData, opts) {
   data = helper.prune(data);
   data.sort('longname, version, since');
   helper.addEventListeners(data);
-  
   
   data().each(function(doclet) {
     var sourcePath;
@@ -485,11 +518,23 @@ exports.publish = function(taffyData, opts) {
   if (sourceFilePaths.length) {
     sourceFiles = shortenPaths( sourceFiles, path.commonPrefix(sourceFilePaths) );
   }
+  //console.log(helper.longnameToUrl)
+  //console.log('****')
+  
   data().each(function(doclet) {
     var docletPath;
-    var url = helper.createLink(doclet);
+    //var url = helper.createLink(doclet);
+    var url = x_createLink(doclet);
+    //console.log('? ' + doclet.longname + ' : ' + url)
+  
+    
+    // WIP
+    // /console.log(helper.longnameToUrl)
 
     helper.registerLink(doclet.longname, url);
+    
+    //console.log(helper.longnameToUrl)
+    //console.log('---')
 
     // add a shortened version of the full path
     if (doclet.meta) {
@@ -566,6 +611,7 @@ exports.publish = function(taffyData, opts) {
   files = find({kind: 'file'});
   packages = find({kind: 'package'});
   
+  /*
   generate('Home',
     packages.concat(
       [{
@@ -574,6 +620,7 @@ exports.publish = function(taffyData, opts) {
         longname: (opts.mainpagetitle) ? opts.mainpagetitle : 'Main Page'
       }]
     ).concat(files), indexUrl);
+  */
   
   // set up the lists that we'll use to generate pages
   classes = taffy(members.classes);
@@ -593,11 +640,18 @@ exports.publish = function(taffyData, opts) {
     var myNamespaces = helper.find(namespaces, {longname: longname});
     
     if (myModules.length) {
+      //console.log('MY MODULES');
+      //console.log(myModules);
+      //console.log('----')
+      //console.log(helper.longnameToUrl)
+      
       generate('Module: ' + myModules[0].name, myModules, helper.longnameToUrl[longname]);
     }
     
+    //console.log(packageInfo)
+    
     if (myClasses.length) {
-      generate('Class: ' + myClasses[0].name, myClasses, helper.longnameToUrl[longname]);
+      generate(myClasses[0].name, myClasses, helper.longnameToUrl[longname]);
     }
     
     if (myNamespaces.length) {
