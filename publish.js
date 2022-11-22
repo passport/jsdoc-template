@@ -20,6 +20,23 @@ var packageJSON;
 
 var outdir = path.normalize(env.opts.destination);
 
+function x_prettyURL(name) {
+  var dirname = path.dirname(name)
+    , basename = path.basename(name, '.html')
+    , extname = path.extname(name)
+  
+  if ('.html' === extname) {
+    basename = 'index' !== basename ? basename : '';
+    
+    //page.url = path.join(dirname, basename) + '/';
+    //page.outputPath = path.join(page.basePath || '', dirname, basename, index + ext);
+    
+    return path.join(dirname, basename, 'index.html');
+  }
+  
+  return name;
+}
+
 // Equivalent to helper.createLink, but using desired path naming conventions
 function x_createLink(doclet) {
   var out = helper.createLink(doclet);
@@ -32,6 +49,20 @@ function x_createLink(doclet) {
     out = 'index.html';
   }
   
+  
+  console.log(doclet.longname + ' : ' + out);
+  var i = out.indexOf('#');
+  console.log(i);
+  
+  var p = i === -1 ? out : out.slice(0, i)
+    , f = i === -1 ? undefined : out.slice(i);
+  
+  console.log('P: ' + p);
+  console.log('F: ' + f);
+  
+  
+  var pu = x_prettyURL(out);
+  console.log(pu)
   
   return out;
 }
