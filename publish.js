@@ -339,6 +339,7 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
     var itemsNav = '';
 
     items.forEach(function(item) {
+      console.log(item);
       var displayName;
 
       if ( !hasOwnProp.call(item, 'longname') ) {
@@ -354,10 +355,26 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
 
         itemsSeen[item.longname] = true;
       }
+      
+      var methods = find({kind: 'function', memberof: item.longname});
+      console.log(methods)
+      
+      if (methods && methods.length) {
+        itemsNav += '<ul>';
+        
+        methods.forEach(function(m) {
+          itemsNav += '<li>' + m.name + '</li>';
+        });
+        
+        itemsNav += '</ul>';
+      }
     });
 
+    console.log(itemsNav);
+
     if (itemsNav !== '') {
-      nav += '<h3>' + itemHeading + '</h3><ul>' + itemsNav + '</ul>';
+      //nav += '<h3>' + itemHeading + '</h3><ul>' + itemsNav + '</ul>';
+      nav += '<ul>' + itemsNav + '</ul>';
     }
   }
 
