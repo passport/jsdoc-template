@@ -387,19 +387,22 @@ function linktoExternal(longName, name) {
  * @return {string} The HTML for the navigation sidebar.
  */
 function buildNav(members) {
+  console.log(members.modules)
+  
   var globalNav;
-  var nav = '<h2><a href="index.html">Home</a></h2>';
+  //var nav = '<h2><a href="index.html">Home</a></h2>';
+  var nav = '<h2><a href="index.html">' + members.modules[0].name + '</a></h2>';
   var seen = {};
   var seenTutorials = {};
 
-  nav += buildMemberNav(members.modules, 'Modules', {}, linkto);
-  nav += buildMemberNav(members.externals, 'Externals', seen, linktoExternal);
+  //nav += buildMemberNav(members.modules, 'Modules', {}, linkto);
+  //nav += buildMemberNav(members.externals, 'Externals', seen, linktoExternal);
   nav += buildMemberNav(members.classes, 'Classes', seen, linkto);
-  nav += buildMemberNav(members.events, 'Events', seen, linkto);
-  nav += buildMemberNav(members.namespaces, 'Namespaces', seen, linkto);
-  nav += buildMemberNav(members.mixins, 'Mixins', seen, linkto);
-  nav += buildMemberNav(members.tutorials, 'Tutorials', seenTutorials, linktoTutorial);
-  nav += buildMemberNav(members.interfaces, 'Interfaces', seen, linkto);
+  //nav += buildMemberNav(members.events, 'Events', seen, linkto);
+  //nav += buildMemberNav(members.namespaces, 'Namespaces', seen, linkto);
+  //nav += buildMemberNav(members.mixins, 'Mixins', seen, linkto);
+  //nav += buildMemberNav(members.tutorials, 'Tutorials', seenTutorials, linktoTutorial);
+  //nav += buildMemberNav(members.interfaces, 'Interfaces', seen, linkto);
 
   if (members.globals.length) {
     globalNav = '';
@@ -627,6 +630,7 @@ exports.publish = function(taffyData, opts) {
   
   // once for all
   view.nav = buildNav(members);
+  console.log(view.nav);
   attachModuleSymbols( find({ longname: {left: 'module:'} }), members.modules );
   
   // generate the pretty-printed source files first so other pages can link to them
