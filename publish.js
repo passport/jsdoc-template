@@ -77,10 +77,11 @@ function x_createLink(doclet) {
   console.log('opu: ' + opu)
   
   //return out;
-  return opu;
+  //return opu;
+  return 'https://www.passportjs.org/api/passport-local/x.x/' + opu;
 }
 
-
+// TODO: Remvoe this?
 function x_linkto(longname, linkText, cssClass, fragmentId) {
   
   var out = linkto.apply(undefined, arguments);
@@ -344,12 +345,22 @@ function generate(title, docs, filename, resolveLinks) {
 
   //console.log(docData.env)
 
+  var root = 'https://www.passportjs.org/api/passport-local/x.x/';
+  var fn = filename.slice(root.length)
+
+
   //outpath = path.join(outdir, filename);
-  outpath = path.join(outdir, filename, 'index.html');
+  //outpath = path.join(outdir, filename, 'index.html');
+  outpath = path.join(outdir, fn, 'index.html');
   html = view.render('container.tmpl', docData);
 
   if (resolveLinks) {
+    //console.log('XXX RESOVLE LINKS');
+    //console.log(html);
+    
     html = helper.resolveLinks(html); // turn {@link foo} into <a href="foodoc.html">foo</a>
+    //console.log(html);
+    //console.log('XXX RESOVLE LINKS');
   }
 
   console.log('OUTPATH: ' + outpath);
@@ -494,8 +505,8 @@ function buildNav(members) {
 
   //nav += buildMemberNav(members.modules, 'Modules', {}, linkto);
   //nav += buildMemberNav(members.externals, 'Externals', seen, linktoExternal);
-  nav += buildMemberNav(members.classes, 'Classes', seen, x_linkto);
-  //nav += buildMemberNav(members.classes, 'Classes', seen, linkto);
+  //nav += buildMemberNav(members.classes, 'Classes', seen, x_linkto);
+  nav += buildMemberNav(members.classes, 'Classes', seen, linkto);
   //nav += buildMemberNav(members.events, 'Events', seen, linkto);
   //nav += buildMemberNav(members.namespaces, 'Namespaces', seen, linkto);
   //nav += buildMemberNav(members.mixins, 'Mixins', seen, linkto);
@@ -722,8 +733,8 @@ exports.publish = function(taffyData, opts) {
   
   // add template helpers
   view.find = find;
-  //view.linkto = linkto;
-  view.linkto = x_linkto;
+  view.linkto = linkto;
+  //view.linkto = x_linkto;
   view.resolveAuthorLinks = resolveAuthorLinks;
   view.tutoriallink = tutoriallink;
   view.htmlsafe = htmlsafe;
