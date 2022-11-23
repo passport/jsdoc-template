@@ -31,7 +31,8 @@ function x_prettyURL(name) {
     //page.url = path.join(dirname, basename) + '/';
     //page.outputPath = path.join(page.basePath || '', dirname, basename, index + ext);
     
-    return path.join(dirname, basename, 'index.html').toLowerCase();
+    //return path.join(dirname, basename, 'index.html').toLowerCase();
+    return path.join(dirname, basename).toLowerCase() + '/';
   }
   
   return name;
@@ -40,8 +41,8 @@ function x_prettyURL(name) {
 // Equivalent to helper.createLink, but using desired path naming conventions
 function x_createLink(doclet) {
   var out = helper.createLink(doclet);
-  //console.log('--');
-  //console.log(out);
+  console.log('--');
+  console.log(out);
   //console.log(doclet);
   
   if (doclet.kind == 'module' && doclet.name == packageJSON.name) {
@@ -67,7 +68,7 @@ function x_createLink(doclet) {
   //console.log('OUT: ' + out);
   //console.log('pu: ' + pu)
   var opu = pu + (f ? f : '');
-  //console.log('opu: ' + opu)
+  console.log('opu: ' + opu)
   
   //return out;
   return opu;
@@ -77,17 +78,17 @@ function x_createLink(doclet) {
 function x_linkto(longname, linkText, cssClass, fragmentId) {
   
   var out = linkto.apply(undefined, arguments);
-  console.log('LINK: ' + out);
+  //console.log('LINK: ' + out);
   
   var regex = /(<a[^>]*href=["'])([^"']*)(["'])/g;
   var match = regex.exec(out)
   if (!match) {
-    console.log('NO MATCH: ' + out)
+    //console.log('NO MATCH: ' + out)
     return out;
   }
   
-  console.log(match);
-  console.log(match[2]);
+  //console.log(match);
+  //console.log(match[2]);
   var u = match[2];
   
   var i = u.indexOf('#');
@@ -98,18 +99,18 @@ function x_linkto(longname, linkText, cssClass, fragmentId) {
   //console.log(ix);
   
   var op = p.slice(0, ix)
-  console.log(op);
+  //console.log(op);
   var opu = op + (f ? f : '');
-  console.log(opu);
+  //console.log(opu);
   
   var rout = out.replace(regex, '$1' + opu + '$3');
-  console.log(rout);
+  //console.log(rout);
   
   //return util.format('<a href="%s"%s>%s</a>', encodeURI(fileUrl + fragmentString),
   //          classString, text);
   
   
-  return out;
+  return rout;
 }
 
 
@@ -314,6 +315,8 @@ function getPathFromDoclet(doclet) {
 }
 
 function generate(title, docs, filename, resolveLinks) {
+  console.log('GENERATE: ' + filename);
+  
   var docData;
   var html;
   var outpath;
@@ -329,12 +332,15 @@ function generate(title, docs, filename, resolveLinks) {
 
   //console.log(docData.env)
 
-  outpath = path.join(outdir, filename);
+  //outpath = path.join(outdir, filename);
+  outpath = path.join(outdir, filename, 'index.html');
   html = view.render('container.tmpl', docData);
 
   if (resolveLinks) {
     html = helper.resolveLinks(html); // turn {@link foo} into <a href="foodoc.html">foo</a>
   }
+
+  console.log('OUTPATH: ' + outpath);
 
   var toDir = fs.toDir( outpath );
   fs.mkPath(toDir);
@@ -477,6 +483,7 @@ function buildNav(members) {
   //nav += buildMemberNav(members.modules, 'Modules', {}, linkto);
   //nav += buildMemberNav(members.externals, 'Externals', seen, linktoExternal);
   nav += buildMemberNav(members.classes, 'Classes', seen, x_linkto);
+  //nav += buildMemberNav(members.classes, 'Classes', seen, linkto);
   //nav += buildMemberNav(members.events, 'Events', seen, linkto);
   //nav += buildMemberNav(members.namespaces, 'Namespaces', seen, linkto);
   //nav += buildMemberNav(members.mixins, 'Mixins', seen, linkto);
