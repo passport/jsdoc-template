@@ -74,6 +74,45 @@ function x_createLink(doclet) {
 }
 
 
+function x_linkto(longname, linkText, cssClass, fragmentId) {
+  
+  var out = linkto.apply(undefined, arguments);
+  console.log('LINK: ' + out);
+  
+  var regex = /(<a[^>]*href=["'])([^"']*)(["'])/g;
+  var match = regex.exec(out)
+  if (!match) {
+    console.log('NO MATCH: ' + out)
+    return out;
+  }
+  
+  console.log(match);
+  console.log(match[2]);
+  var u = match[2];
+  
+  var i = u.indexOf('#');
+  var p = i === -1 ? u : u.slice(0, i)
+    , f = i === -1 ? undefined : u.slice(i);
+  
+  var ix = p.indexOf('index.html');
+  //console.log(ix);
+  
+  var op = p.slice(0, ix)
+  console.log(op);
+  var opu = op + (f ? f : '');
+  console.log(opu);
+  
+  var rout = out.replace(regex, '$1' + opu + '$3');
+  console.log(rout);
+  
+  //return util.format('<a href="%s"%s>%s</a>', encodeURI(fileUrl + fragmentString),
+  //          classString, text);
+  
+  
+  return out;
+}
+
+
 function find(spec) {
   return helper.find(data, spec);
 }
@@ -437,7 +476,7 @@ function buildNav(members) {
 
   //nav += buildMemberNav(members.modules, 'Modules', {}, linkto);
   //nav += buildMemberNav(members.externals, 'Externals', seen, linktoExternal);
-  nav += buildMemberNav(members.classes, 'Classes', seen, linkto);
+  nav += buildMemberNav(members.classes, 'Classes', seen, x_linkto);
   //nav += buildMemberNav(members.events, 'Events', seen, linkto);
   //nav += buildMemberNav(members.namespaces, 'Namespaces', seen, linkto);
   //nav += buildMemberNav(members.mixins, 'Mixins', seen, linkto);
@@ -664,7 +703,8 @@ exports.publish = function(taffyData, opts) {
   
   // add template helpers
   view.find = find;
-  view.linkto = linkto;
+  //view.linkto = linkto;
+  view.linkto = x_linkto;
   view.resolveAuthorLinks = resolveAuthorLinks;
   view.tutoriallink = tutoriallink;
   view.htmlsafe = htmlsafe;
