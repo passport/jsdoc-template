@@ -356,8 +356,17 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
         itemsSeen[item.longname] = true;
       }
       
+      var members = find({kind: 'member', memberof: item.longname});
+      if (members && members.length) {
+        itemsNav += '<ul>';
+        members.forEach(function(m) {
+          itemsNav += '<li>' + m.name + '</li>';
+        });
+        itemsNav += '</ul>';
+      }
+      
       var methods = find({kind: 'function', memberof: item.longname});
-      console.log(methods)
+      //console.log(methods)
       
       if (methods && methods.length) {
         itemsNav += '<ul>';
