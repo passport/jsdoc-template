@@ -32,7 +32,12 @@ function x_prettyURL(name) {
     //page.outputPath = path.join(page.basePath || '', dirname, basename, index + ext);
     
     //return path.join(dirname, basename, 'index.html').toLowerCase();
-    return path.join(dirname, basename).toLowerCase() + '/';
+    
+    var p = path.join(dirname, basename).toLowerCase();
+    //console.log(p);
+    
+    return p !== '.' ? p + '/' : '';
+    //return path.join(dirname, basename).toLowerCase() + '/';
   }
   
   return name;
@@ -41,7 +46,7 @@ function x_prettyURL(name) {
 // Equivalent to helper.createLink, but using desired path naming conventions
 function x_createLink(doclet) {
   var out = helper.createLink(doclet);
-  console.log('--');
+  console.log('-- x_createLink');
   console.log(out);
   //console.log(doclet);
   
@@ -51,6 +56,7 @@ function x_createLink(doclet) {
     
     out = 'index.html';
   }
+  console.log(out);
   
   
   //console.log(doclet.longname + ' : ' + out);
@@ -102,6 +108,8 @@ function x_linkto(longname, linkText, cssClass, fragmentId) {
   //console.log(op);
   var opu = op + (f ? f : '');
   //console.log(opu);
+  
+  opu = 'https://www.passportjs.org/api/passport-local/x.x/' + opu;
   
   var rout = out.replace(regex, '$1' + opu + '$3');
   //console.log(rout);
