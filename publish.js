@@ -56,7 +56,7 @@ function x_createLink(doclet) {
     
     out = 'index.html';
   }
-  console.log(out);
+  //console.log(out);
   
   
   //console.log(doclet.longname + ' : ' + out);
@@ -84,7 +84,7 @@ function x_createLink(doclet) {
 function x_linkto(longname, linkText, cssClass, fragmentId) {
   
   var out = linkto.apply(undefined, arguments);
-  //console.log('LINK: ' + out);
+  
   
   var regex = /(<a[^>]*href=["'])([^"']*)(["'])/g;
   var match = regex.exec(out)
@@ -93,23 +93,27 @@ function x_linkto(longname, linkText, cssClass, fragmentId) {
     return out;
   }
   
+  //console.log('LINK: ' + out);
+  
   //console.log(match);
   //console.log(match[2]);
   var u = match[2];
+  console.log('ORIG U: ' + u);
   
   var i = u.indexOf('#');
   var p = i === -1 ? u : u.slice(0, i)
     , f = i === -1 ? undefined : u.slice(i);
   
-  var ix = p.indexOf('index.html');
+  //var ix = p.indexOf('index.html');
   //console.log(ix);
   
-  var op = p.slice(0, ix)
+  //var op = p.slice(0, ix)
   //console.log(op);
-  var opu = op + (f ? f : '');
+  var opu = p + (f ? f : '');
   //console.log(opu);
   
   opu = 'https://www.passportjs.org/api/passport-local/x.x/' + opu;
+  console.log(opu);
   
   var rout = out.replace(regex, '$1' + opu + '$3');
   //console.log(rout);
