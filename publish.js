@@ -31,7 +31,7 @@ function x_prettyURL(name) {
     //page.url = path.join(dirname, basename) + '/';
     //page.outputPath = path.join(page.basePath || '', dirname, basename, index + ext);
     
-    return path.join(dirname, basename, 'index.html');
+    return path.join(dirname, basename, 'index.html').toLowerCase();
   }
   
   return name;
@@ -40,6 +40,8 @@ function x_prettyURL(name) {
 // Equivalent to helper.createLink, but using desired path naming conventions
 function x_createLink(doclet) {
   var out = helper.createLink(doclet);
+  //console.log('--');
+  //console.log(out);
   //console.log(doclet);
   
   if (doclet.kind == 'module' && doclet.name == packageJSON.name) {
@@ -61,10 +63,14 @@ function x_createLink(doclet) {
   //console.log('F: ' + f);
   
   
-  var pu = x_prettyURL(out);
-  //console.log(pu)
+  var pu = x_prettyURL(p);
+  //console.log('OUT: ' + out);
+  //console.log('pu: ' + pu)
+  var opu = pu + (f ? f : '');
+  //console.log('opu: ' + opu)
   
-  return out;
+  //return out;
+  return opu;
 }
 
 
@@ -291,6 +297,8 @@ function generate(title, docs, filename, resolveLinks) {
     html = helper.resolveLinks(html); // turn {@link foo} into <a href="foodoc.html">foo</a>
   }
 
+  var toDir = fs.toDir( outpath );
+  fs.mkPath(toDir);
   fs.writeFileSync(outpath, html, 'utf8');
 }
 
