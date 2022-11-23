@@ -43,26 +43,26 @@ function x_createLink(doclet) {
   //console.log(doclet);
   
   if (doclet.kind == 'module' && doclet.name == packageJSON.name) {
-    console.log('**** MAKE IT INDEX *****');
-    console.log(out);
+    //console.log('**** MAKE IT INDEX *****');
+    //console.log(out);
     
     out = 'index.html';
   }
   
   
-  console.log(doclet.longname + ' : ' + out);
+  //console.log(doclet.longname + ' : ' + out);
   var i = out.indexOf('#');
-  console.log(i);
+  //console.log(i);
   
   var p = i === -1 ? out : out.slice(0, i)
     , f = i === -1 ? undefined : out.slice(i);
   
-  console.log('P: ' + p);
-  console.log('F: ' + f);
+  //console.log('P: ' + p);
+  //console.log('F: ' + f);
   
   
   var pu = x_prettyURL(out);
-  console.log(pu)
+  //console.log(pu)
   
   return out;
 }
@@ -278,8 +278,11 @@ function generate(title, docs, filename, resolveLinks) {
   docData = {
     env: env,
     title: title,
-    docs: docs
+    docs: docs,
+    package: packageJSON
   };
+
+  console.log(docData.env)
 
   outpath = path.join(outdir, filename);
   html = view.render('container.tmpl', docData);
@@ -339,7 +342,7 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
     var itemsNav = '';
 
     items.forEach(function(item) {
-      console.log(item);
+      //console.log(item);
       var displayName;
 
       if ( !hasOwnProp.call(item, 'longname') ) {
@@ -379,7 +382,7 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
       }
     });
 
-    console.log(itemsNav);
+    //console.log(itemsNav);
 
     if (itemsNav !== '') {
       //nav += '<h3>' + itemHeading + '</h3><ul>' + itemsNav + '</ul>';
@@ -413,7 +416,7 @@ function linktoExternal(longName, name) {
  * @return {string} The HTML for the navigation sidebar.
  */
 function buildNav(members) {
-  console.log(members.modules)
+  //console.log(members.modules)
   
   var globalNav;
   //var nav = '<h2><a href="index.html">Home</a></h2>';
@@ -458,8 +461,8 @@ function buildNav(members) {
     @param {object} opts
  */
 exports.publish = function(taffyData, opts) {
-  console.log('template publish');
-  console.log(opts);
+  //console.log('template publish');
+  //console.log(opts);
   //console.log(env)
   
   //console.log(data);
