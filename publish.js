@@ -364,7 +364,7 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
         itemsNav += '<h4>Properties</h4>';
         itemsNav += '<ul>';
         members.forEach(function(m) {
-          itemsNav += '<li>' + m.name + '</li>';
+          itemsNav += '<li>.' + m.name + '</li>';
         });
         itemsNav += '</ul>';
       }
@@ -377,7 +377,7 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
         itemsNav += '<ul>';
         
         methods.forEach(function(m) {
-          itemsNav += '<li>' + m.name + '</li>';
+          itemsNav += '<li>.' + m.name + '()</li>';
         });
         
         itemsNav += '</ul>';
