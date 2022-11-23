@@ -282,7 +282,7 @@ function generate(title, docs, filename, resolveLinks) {
     package: packageJSON
   };
 
-  console.log(docData.env)
+  //console.log(docData.env)
 
   outpath = path.join(outdir, filename);
   html = view.render('container.tmpl', docData);
@@ -354,13 +354,14 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
         } else {
           displayName = item.name;
         }
-        itemsNav += '<li>' + linktoFn(item.longname, displayName.replace(/\b(module|event):/g, '')) + '</li>';
+        itemsNav += '<h3>' + linktoFn(item.longname, displayName.replace(/\b(module|event):/g, '')) + '</h3>';
 
         itemsSeen[item.longname] = true;
       }
       
       var members = find({kind: 'member', memberof: item.longname});
       if (members && members.length) {
+        itemsNav += '<h4>Properties</h4>';
         itemsNav += '<ul>';
         members.forEach(function(m) {
           itemsNav += '<li>' + m.name + '</li>';
@@ -372,6 +373,7 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
       //console.log(methods)
       
       if (methods && methods.length) {
+        itemsNav += '<h4>Methods</h4>';
         itemsNav += '<ul>';
         
         methods.forEach(function(m) {
@@ -386,7 +388,8 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
 
     if (itemsNav !== '') {
       //nav += '<h3>' + itemHeading + '</h3><ul>' + itemsNav + '</ul>';
-      nav += '<ul>' + itemsNav + '</ul>';
+      //nav += '<ul>' + itemsNav + '</ul>';
+      nav += itemsNav;
     }
   }
 
@@ -451,6 +454,8 @@ function buildNav(members) {
       nav += '<h3>Global</h3><ul>' + globalNav + '</ul>';
     }
   }
+
+  //console.log(nav);
 
   return nav;
 }
