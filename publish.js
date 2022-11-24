@@ -47,7 +47,7 @@ function x_prettyURL(name) {
 // Equivalent to helper.createLink, but using desired path naming conventions
 function x_createLink(doclet) {
   var out = helper.createLink(doclet);
-  console.log('-- x_createLink');
+  console.log('--! x_createLink');
   console.log(out);
   //console.log(doclet);
   
@@ -76,7 +76,7 @@ function x_createLink(doclet) {
   //console.log('pu: ' + pu)
   var opu = pu + (f ? f : '');
   
-  var root = 'https://www.passportjs.org/api/passport-local/x.x/';
+  var root = 'https://www.passportjs.org/api/passport-local/1.x/';
   var ru = uri.resolve(root, opu)
   
   console.log('opu: ' + opu)
@@ -122,7 +122,7 @@ function x_linkto(longname, linkText, cssClass, fragmentId) {
   var opu = p + (f ? f : '');
   //console.log(opu);
   
-  opu = 'https://www.passportjs.org/api/passport-local/x.x/' + opu;
+  opu = 'https://www.passportjs.org/api/passport-local/1.x/' + opu;
   console.log(opu);
   
   var rout = out.replace(regex, '$1' + opu + '$3');
@@ -354,7 +354,8 @@ function generate(title, docs, filename, resolveLinks) {
 
   //console.log(docData.env)
 
-  var root = 'https://www.passportjs.org/api/passport-local/x.x/';
+  var root = 'https://www.passportjs.org/api/passport-local/1.x/';
+  //var root = '/api/passport-local/1.x/';
   var fn = filename.slice(root.length)
 
 
