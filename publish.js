@@ -6,6 +6,7 @@ var path = require('jsdoc/path');
 const template = require('jsdoc/template');
 var fs = require('jsdoc/fs');
 var util = require('util');
+var uri = require('url')
 
 var htmlsafe = helper.htmlsafe;
 var linkto = helper.linkto;
@@ -74,15 +75,23 @@ function x_createLink(doclet) {
   //console.log('OUT: ' + out);
   //console.log('pu: ' + pu)
   var opu = pu + (f ? f : '');
+  
+  var root = 'https://www.passportjs.org/api/passport-local/x.x/';
+  var ru = uri.resolve(root, opu)
+  
   console.log('opu: ' + opu)
+  console.log(ru);
+  
+  
   
   //return out;
   //return opu;
-  return 'https://www.passportjs.org/api/passport-local/x.x/' + opu;
+  return ru;
 }
 
 // TODO: Remvoe this?
 function x_linkto(longname, linkText, cssClass, fragmentId) {
+  console.log('XXXX LINK TO: ');
   
   var out = linkto.apply(undefined, arguments);
   
