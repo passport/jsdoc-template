@@ -553,9 +553,9 @@ function buildNav(members) {
     @param {object} opts
  */
 exports.publish = function(taffyData, opts) {
-  //console.log('template publish');
-  //console.log(opts);
-  //console.log(env)
+  console.log('template publish');
+  console.log(opts);
+  console.log(env)
   
   //console.log(data);
   //console.log(opts);
@@ -582,7 +582,8 @@ exports.publish = function(taffyData, opts) {
   var templatePath;
   //var packageJSON;
   
-  var pdata = fs.readFileSync('package.json', 'utf8');
+  // TODO: remove this in favor of packageInfo
+  var pdata = fs.readFileSync(opts.package || 'package.json', 'utf8');
   packageJSON = JSON.parse(pdata);
   
   //console.log(packageJSON);
@@ -653,7 +654,8 @@ exports.publish = function(taffyData, opts) {
   
   packageInfo = ( find({kind: 'package'}) || [] )[0];
   if (packageInfo && packageInfo.name) {
-    outdir = path.join( outdir, packageInfo.name, (packageInfo.version || '') );
+    //console.log(packageInfo);
+    //outdir = path.join( outdir, packageInfo.name, (packageInfo.version || '') );
   }
   fs.mkPath(outdir);
   
