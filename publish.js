@@ -47,8 +47,8 @@ function x_prettyURL(name) {
 // Equivalent to helper.createLink, but using desired path naming conventions
 function x_createLink(doclet) {
   var out = helper.createLink(doclet);
-  console.log('--! x_createLink');
-  console.log(out);
+  //console.log('--! x_createLink');
+  //console.log(out);
   //console.log(doclet);
   
   if (doclet.kind == 'module' && doclet.name == packageJSON.name) {
@@ -79,8 +79,8 @@ function x_createLink(doclet) {
   var root = 'https://www.passportjs.org/api/passport-local/1.x/';
   var ru = uri.resolve(root, opu)
   
-  console.log('opu: ' + opu)
-  console.log(ru);
+  //console.log('opu: ' + opu)
+  //console.log(ru);
   
   
   
@@ -91,7 +91,7 @@ function x_createLink(doclet) {
 
 // TODO: Remvoe this?
 function x_linkto(longname, linkText, cssClass, fragmentId) {
-  console.log('XXXX LINK TO: ');
+  // /console.log('XXXX LINK TO: ');
   
   var out = linkto.apply(undefined, arguments);
   
@@ -108,7 +108,7 @@ function x_linkto(longname, linkText, cssClass, fragmentId) {
   //console.log(match);
   //console.log(match[2]);
   var u = match[2];
-  console.log('ORIG U: ' + u);
+  //console.log('ORIG U: ' + u);
   
   var i = u.indexOf('#');
   var p = i === -1 ? u : u.slice(0, i)
@@ -123,7 +123,7 @@ function x_linkto(longname, linkText, cssClass, fragmentId) {
   //console.log(opu);
   
   opu = 'https://www.passportjs.org/api/passport-local/1.x/' + opu;
-  console.log(opu);
+  //console.log(opu);
   
   var rout = out.replace(regex, '$1' + opu + '$3');
   //console.log(rout);
@@ -337,7 +337,7 @@ function getPathFromDoclet(doclet) {
 }
 
 function generate(title, docs, filename, resolveLinks) {
-  console.log('GENERATE: ' + filename);
+  //console.log('GENERATE: ' + filename);
   
   var docData;
   var html;
@@ -373,7 +373,7 @@ function generate(title, docs, filename, resolveLinks) {
     //console.log('XXX RESOVLE LINKS');
   }
 
-  console.log('OUTPATH: ' + outpath);
+  //console.log('OUTPATH: ' + outpath);
 
   var toDir = fs.toDir( outpath );
   fs.mkPath(toDir);
@@ -553,9 +553,9 @@ function buildNav(members) {
     @param {object} opts
  */
 exports.publish = function(taffyData, opts) {
-  console.log('template publish');
-  console.log(opts);
-  console.log(env)
+  //console.log('template publish');
+  //console.log(opts);
+  //console.log(env)
   
   //console.log(data);
   //console.log(opts);
@@ -754,7 +754,7 @@ exports.publish = function(taffyData, opts) {
   
   // once for all
   view.nav = buildNav(members);
-  console.log(view.nav);
+  //console.log(view.nav);
   attachModuleSymbols( find({ longname: {left: 'module:'} }), members.modules );
   
   // generate the pretty-printed source files first so other pages can link to them
