@@ -76,8 +76,10 @@ function x_createLink(doclet) {
   //console.log('pu: ' + pu)
   var opu = pu + (f ? f : '');
   
-  var root = 'https://www.passportjs.org/api/passport-local/1.x/';
+  var root = '/api/passport-local/1.x/';
   var ru = uri.resolve(root, opu)
+  //var root = '/api/passport-local/1.x/';
+  //var ru = path.resolve(root, opu)
   
   //console.log('opu: ' + opu)
   //console.log(ru);
@@ -354,8 +356,8 @@ function generate(title, docs, filename, resolveLinks) {
 
   //console.log(docData.env)
 
-  var root = 'https://www.passportjs.org/api/passport-local/1.x/';
-  //var root = '/api/passport-local/1.x/';
+  //var root = 'https://www.passportjs.org/api/passport-local/1.x/';
+  var root = '/api/passport-local/1.x/';
   var fn = filename.slice(root.length)
 
 
@@ -373,7 +375,7 @@ function generate(title, docs, filename, resolveLinks) {
     //console.log('XXX RESOVLE LINKS');
   }
 
-  //console.log('OUTPATH: ' + outpath);
+  console.log('OUTPATH: ' + outpath);
 
   var toDir = fs.toDir( outpath );
   fs.mkPath(toDir);
