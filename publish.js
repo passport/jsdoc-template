@@ -511,7 +511,7 @@ function buildNav(members) {
   
   var globalNav;
   //var nav = '<h2><a href="index.html">Home</a></h2>';
-  var nav = '<h2><a href="index.html">' + members.modules[0].name + '</a></h2>';
+  var nav = '<h2><a href="' + x_createLink(members.modules[0]) + '">' + members.modules[0].name + '</a></h2>';
   var seen = {};
   var seenTutorials = {};
 
