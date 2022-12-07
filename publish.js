@@ -17,7 +17,7 @@ var hasOwnProp = Object.prototype.hasOwnProperty;
 
 var data;
 var view;
-var packageJSON;
+var packageInfo;
 
 var outdir = path.normalize(env.opts.destination);
 
@@ -51,7 +51,7 @@ function x_createLink(doclet) {
   //console.log(out);
   //console.log(doclet);
   
-  if (doclet.kind == 'module' && doclet.name == packageJSON.name) {
+  if (doclet.kind == 'module' && doclet.name == packageInfo.name) {
     //console.log('**** MAKE IT INDEX *****');
     //console.log(out);
     
@@ -76,7 +76,7 @@ function x_createLink(doclet) {
   //console.log('pu: ' + pu)
   var opu = pu + (f ? f : '');
   
-  var root = '/api/passport-local/1.x/';
+  var root = '/api/' + packageInfo.name + '/1.x/';
   var ru = uri.resolve(root, opu)
   //var root = '/api/passport-local/1.x/';
   //var ru = path.resolve(root, opu)
@@ -351,13 +351,13 @@ function generate(title, docs, filename, resolveLinks) {
     env: env,
     title: title,
     docs: docs,
-    package: packageJSON
+    package: packageInfo
   };
 
   //console.log(docData.env)
 
   //var root = 'https://www.passportjs.org/api/passport-local/1.x/';
-  var root = '/api/passport-local/1.x/';
+  var root = '/api/' + packageInfo.name + '/1.x/';
   var fn = filename.slice(root.length)
 
 
@@ -576,7 +576,7 @@ exports.publish = function(taffyData, opts) {
   var namespaces;
   var members;
   var outputSourceFiles;
-  var packageInfo;
+  //var packageInfo;
   var packages;
   var sourceFilePaths = [];
   var sourceFiles = {};
@@ -585,8 +585,8 @@ exports.publish = function(taffyData, opts) {
   //var packageJSON;
   
   // TODO: remove this in favor of packageInfo
-  var pdata = fs.readFileSync(opts.package || 'package.json', 'utf8');
-  packageJSON = JSON.parse(pdata);
+  //var pdata = fs.readFileSync(opts.package || 'package.json', 'utf8');
+  //packageJSON = JSON.parse(pdata);
   
   //console.log(packageJSON);
   
