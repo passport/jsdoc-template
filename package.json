@@ -1,4 +1,7 @@
 {
   "name": "@passportjs.org/jsdoc-template",
-  "main": "publish.js"
+  "main": "publish.js",
+  "dependencies": {
+    "semver": "^7.3.8"
+  }
 }

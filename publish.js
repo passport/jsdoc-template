@@ -7,6 +7,7 @@ const template = require('jsdoc/template');
 var fs = require('jsdoc/fs');
 var util = require('util');
 var uri = require('url')
+var semver = require('semver');
 
 var htmlsafe = helper.htmlsafe;
 var linkto = helper.linkto;
@@ -44,6 +45,17 @@ function x_prettyURL(name) {
   return name;
 }
 
+function x_createLinkVersion(version) {
+  var sv = semver.parse(version);
+  //console.log(sv);
+  
+  if (sv.major == 0) {
+    return [sv.major, sv.minor, 'x'].join('.');
+  }
+  
+  return [sv.major, 'x'].join('.');
+}
+
 // Equivalent to helper.createLink, but using desired path naming conventions
 function x_createLink(doclet) {
   var out = helper.createLink(doclet);
@@ -76,7 +88,10 @@ function x_createLink(doclet) {
   //console.log('pu: ' + pu)
   var opu = pu + (f ? f : '');
   
-  var root = '/api/' + packageInfo.name + '/1.x/';
+  
+  //console.log('VER: ' + x_createLinkVersion('1.2.4'))
+  
+  var root = '/api/' + packageInfo.name + '/' + x_createLinkVersion(packageInfo.version) + '/';
   var ru = uri.resolve(root, opu)
   //var root = '/api/passport-local/1.x/';
   //var ru = path.resolve(root, opu)
@@ -357,7 +372,7 @@ function generate(title, docs, filename, resolveLinks) {
   //console.log(docData.env)
 
   //var root = 'https://www.passportjs.org/api/passport-local/1.x/';
-  var root = '/api/' + packageInfo.name + '/1.x/';
+  var root = '/api/' + packageInfo.name + '/' + x_createLinkVersion(packageInfo.version) + '/';
   var fn = filename.slice(root.length)
 
 
@@ -375,7 +390,7 @@ function generate(title, docs, filename, resolveLinks) {
     //console.log('XXX RESOVLE LINKS');
   }
 
-  console.log('OUTPATH: ' + outpath);
+  //console.log('OUTPATH: ' + outpath);
 
   var toDir = fs.toDir( outpath );
   fs.mkPath(toDir);
